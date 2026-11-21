@@ -60,3 +60,6 @@ Hashed passwords, parameterised SQL, HttpOnly session cookies, rate limits on lo
 - AQI uses the US scale from model-based data, not a local monitor.
 - Impact numbers are rough and not medical advice. See a doctor for breathing difficulty.
 - Neighbourhood search works best with well-known place names.
+
+App deployment: 
+https://smogshield-qeje.onrender.com/
