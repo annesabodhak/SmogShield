@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0B1F4B">
+<title>SmogShield - Urban Air Quality Assistant</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<section id="auth" class="auth" aria-labelledby="auth-title">
+  <div class="card auth-card">
+    <h1 id="auth-title">SmogShield</h1>
+    <p class="muted">Winter smog help for your family</p>
+    <div class="tabs" role="tablist" aria-label="Account">
+      <button type="button" role="tab" aria-selected="true" data-mode="login">Log in</button>
+      <button type="button" role="tab" aria-selected="false" data-mode="signup">Sign up</button>
+    </div>
+    <form id="auth-form" novalidate>
+      <label class="signup-only" hidden>Username<input id="username" autocomplete="username" maxlength="30"></label>
+      <label>Email<input id="email" type="email" autocomplete="email" inputmode="email"></label>
+      <label>Password<input id="password" type="password" autocomplete="current-password" minlength="8"></label>
+      <p id="auth-error" class="error" role="alert"></p>
+      <button class="btn" type="submit" id="auth-submit">Log in</button>
+    </form>
+  </div>
+</section>
+
+<div id="app" class="shell" hidden>
+  <header class="top">
+    <div>
+      <h1 id="greeting">Hey there</h1>
+      <p class="muted">Your family's smog plan for today</p>
+    </div>
+    <button class="btn ghost" id="logout" type="button">Log out</button>
+  </header>
+
+  <nav id="nav" aria-label="Main">
+    <button type="button" data-tab="overview"><span aria-hidden="true">🏠</span><span>Overview</span></button>
+    <button type="button" data-tab="routine"><span aria-hidden="true">🕒</span><span>Routine</span></button>
+    <button type="button" data-tab="hacks"><span aria-hidden="true">🧰</span><span>Air hacks</span></button>
+    <button type="button" data-tab="swaps"><span aria-hidden="true">🌱</span><span>Swaps</span></button>
+    <button type="button" data-tab="chat"><span aria-hidden="true">💬</span><span>Ask</span></button>
+  </nav>
+
+  <main id="main">
+    <section id="tab-overview" class="panel" aria-label="Overview">
+      <div id="aqi-card" class="card"><p class="muted">Save your profile to see live air quality.</p></div>
+      <form id="profile-form" class="card" novalidate>
+        <h2>Your profile</h2>
+        <label>City or neighbourhood
+          <input name="city" list="cities" placeholder="e.g. Kolkata, Salt Lake" maxlength="80" autocomplete="off">
+        </label>
+        <datalist id="cities">
+          <option value="Delhi"><option value="Gurugram"><option value="Noida"><option value="Kolkata">
+          <option value="Mumbai"><option value="Lucknow"><option value="Patna"><option value="Kanpur">
+          <option value="Ahmedabad"><option value="Pune"><option value="Hyderabad"><option value="Bengaluru"><option value="Chennai">
+        </datalist>
+        <fieldset>
+          <legend>Who lives at home?</legend>
+          <label class="check"><input type="checkbox" name="household" value="kids">Kids</label>
+          <label class="check"><input type="checkbox" name="household" value="elderly">Elderly</label>
+          <label class="check"><input type="checkbox" name="household" value="asthma">Asthma or allergies</label>
+          <label class="check"><input type="checkbox" name="household" value="pregnant">Pregnancy</label>
+        </fieldset>
+        <div class="grid2">
+          <label>Main commute
+            <select name="commute">
+              <option value="car">Car</option><option value="two_wheeler">Two-wheeler</option>
+              <option value="bus">Bus</option><option value="metro">Metro</option>
+              <option value="erickshaw">E-rickshaw</option><option value="bicycle">Bicycle</option><option value="walk">Walk</option>
+            </select></label>
+          <label>One-way distance (km)<input name="distance_km" type="number" min="0.1" max="100" step="0.1" value="8" inputmode="decimal"></label>
+          <label>Commute days per week<input name="days" type="number" min="1" max="7" value="5" inputmode="numeric"></label>
+          <label>Carpool group size<input name="people" type="number" min="1" max="6" value="3" inputmode="numeric"></label>
+          <label>Cooking fuel
+            <select name="fuel"><option value="lpg">LPG</option><option value="wood">Wood or coal</option><option value="electric">Induction or electric</option></select></label>
+          <label>Windows at home
+            <select name="home"><option value="closed">Mostly closed or AC</option><option value="open">Often open</option></select></label>
+        </div>
+        <label class="check"><input type="checkbox" name="exhaust">Kitchen has an exhaust fan</label>
+        <p id="profile-error" class="error" role="alert"></p>
+        <button class="btn" type="submit" id="profile-save">Save and update</button>
+      </form>
+    </section>
+
+    <section id="tab-routine" class="panel" aria-label="Daily routine" hidden>
+      <div class="card"><h2>Today's low-smog routine</h2><div id="routine" aria-live="polite"><p class="muted">Save your profile to build today's schedule.</p></div></div>
+    </section>
+
+    <section id="tab-hacks" class="panel" aria-label="Indoor air hacks" hidden>
+      <div class="card">
+        <h2>Indoor air quality hacks</h2>
+        <label>Budget
+          <select id="budget"><option value="all">Any budget</option><option value="free">Free</option>
+            <option value="low">Under ₹500</option><option value="mid">Under ₹2000</option></select></label>
+      </div>
+      <div id="hack-list" class="stack"></div>
+    </section>
+
+    <section id="tab-swaps" class="panel" aria-label="Sustainable swaps" hidden>
+      <div class="card"><h2>Sustainable swaps</h2><div id="swaps" aria-live="polite"><p class="muted">Save your profile to see your impact.</p></div></div>
+    </section>
+
+    <section id="tab-chat" class="panel" aria-label="Ask the assistant" hidden>
+      <div class="card chat">
+        <h2>Ask SmogShield</h2>
+        <div id="chat-log" class="chat-log" role="log" aria-live="polite"></div>
+        <div class="chips" id="chips"></div>
+        <form id="chat-form" class="chat-form">
+          <label class="sr" for="chat-input">Your question</label>
+          <input id="chat-input" maxlength="500" placeholder="Is it safe for my child to cycle today?" autocomplete="off">
+          <button class="btn" type="submit">Send</button>
+        </form>
+      </div>
+    </section>
+  </main>
+</div>
+<script src="/script.js"></script>
+</body>
+</html>
